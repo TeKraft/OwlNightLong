@@ -2,9 +2,12 @@ import ogr
 import os
 import numpy as np
 import sys
+from math import sin, cos, atan2, radians, sqrt, acos
 
 
-dataPath = os.path.join('C:\\','Users','s_slim01','Downloads','movebank','movebank','eagle_owl','Eagle owl Reinhard Vohwinkel MPIO','points.shp')
+# dataPath = os.path.join('C:\\','Users','s_slim01','Downloads','movebank','movebank','eagle_owl','Eagle owl Reinhard Vohwinkel MPIO','points.shp')
+dataPath = os.path.join('/home','torben','Documents','uni','Master','SS_2018','PyGIS','final_submission','movebank','eagle_owl','Eagle owl Reinhard Vohwinkel MPIO','points.shp')
+
 
 def openFile(path,driverTitle):
     if os.path.exists(path):
@@ -20,6 +23,7 @@ def openFile(path,driverTitle):
         print("Path does not exist %s" %(path))
         return None 
 
+
 def getOwlIDs(data):
     owlLayer = data.GetLayer(0)
     feature = owlLayer.GetNextFeature()
@@ -31,22 +35,58 @@ def getOwlIDs(data):
 
     return list(set(IDvalues))
 
-#TODO: Make it work (Set correct attribute filter OR use if...)
+
 def owlDistanceAndTime(owlID, data):
     owlLayer = data.GetLayer(0)
-    owlLayer.SetAttributeFilter("tag_ident == 4044") 
-    feature = owlLayer.GetNextFeature()    
+    owlLayer.SetAttributeFilter("tag_ident = '" + owlID + "'")
+    feature = owlLayer.GetNextFeature()
+    timeValues = []
+    timeValuesALL = []
+    counter = 0
+
     while feature:
         timestamp = feature.GetFieldAsString("timestamp")
-        print(timestamp)
+        owlTableId = feature.GetFieldAsString('tag_ident')
+
+        distance = 0
+        if (counter > 0):
+             # previous feature
+            lat1 = oldFeature.GetFieldAsDouble('lat')
+            lon1 = oldFeature.GetFieldAsDouble('long')
+            # current feature
+            lat2 = feature.GetFieldAsDouble('lat')
+            lon2 = feature.GetFieldAsDouble('long')
+
+            distance = calcDistance((lat1, lon1), (lat2, lon2))
+
+        timeValues.append((timestamp, distance))
+
+        # if (owlTableId == owlID):
+        counter += 1
+        oldFeature = feature
         feature = owlLayer.GetNextFeature()
+
+    return timeValues
     
+# calculate distance of two points in m
+def calcDistance(latlng1, latlng2):
+    lat1 = radians(latlng1[0])
+    lat2 = radians(latlng2[0])
+    lon1 = radians(latlng1[1])
+    lon2 = radians(latlng2[1])
+    # distance calculation:
+    cosG = sin(lat1)*sin(lat2) + cos(lat1) * cos(lat2) * cos(lon2 - lon1)
+    dist = 6378.388 * acos(cosG)
+    return dist * 1000
 
 
 shpData = openFile(dataPath,'ESRI Shapefile')
 owlIds = getOwlIDs(shpData)
-owlDistanceAndTime(owlIds[0],shpData)
+
+for owl in owlIds:
+    singleOwl = owlDistanceAndTime(owl,shpData)
+    print()
+    print(singleOwl)
+
     
 
-
-        
