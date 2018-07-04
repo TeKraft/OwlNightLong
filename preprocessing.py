@@ -1,13 +1,10 @@
+print('preprocessing')
+
 import ogr
 import os
 import numpy as np
 import sys
 from math import sin, cos, atan2, radians, sqrt, acos
-
-
-# dataPath = os.path.join('C:\\','Users','s_slim01','Downloads','movebank','movebank','eagle_owl','Eagle owl Reinhard Vohwinkel MPIO','points.shp')
-dataPath = os.path.join('/home','torben','Documents','uni','Master','SS_2018','PyGIS','final_submission','movebank','eagle_owl','Eagle owl Reinhard Vohwinkel MPIO','points.shp')
-
 
 def openFile(path,driverTitle):
     if os.path.exists(path):
@@ -79,14 +76,6 @@ def calcDistance(latlng1, latlng2):
     dist = 6378.388 * acos(cosG)
     return dist * 1000
 
-
-shpData = openFile(dataPath,'ESRI Shapefile')
-owlIds = getOwlIDs(shpData)
-
-for owl in owlIds:
-    singleOwl = owlDistanceAndTime(owl,shpData)
-    print()
-    print(singleOwl)
 
     
 
