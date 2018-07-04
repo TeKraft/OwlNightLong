@@ -1,7 +1,5 @@
-print('main')
-
 from preprocessing import openFile, getOwlIDs, owlDistanceAndTime
-from processing import *
+from processing import timebasedAvg
 
 import os
 
@@ -12,6 +10,8 @@ shpData = openFile(dataPath,'ESRI Shapefile')
 owlIds = getOwlIDs(shpData)
 
 for owl in owlIds:
-    singleOwl = owlDistanceAndTime(owl,shpData)
+    singleOwl = owlDistanceAndTime(owlIds[0],shpData)
     print()
     print(singleOwl)
+    interval = 3600000 # 60 min => 1000 * 60 * 60 // 1000 = 1 sec
+    timebasedAvg(singleOwl, interval)

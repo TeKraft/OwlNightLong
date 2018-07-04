@@ -1,5 +1,3 @@
-print('preprocessing')
-
 import ogr
 import os
 import numpy as np
