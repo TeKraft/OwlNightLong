@@ -22,10 +22,11 @@ def timebasedAvg(owl):
             if(currentHour != lastDate.hour):
                 average = distance/counter
                 averageArray.append((average, counter, firstDate, lastDate))
+                distance = 0
                 counter = 0
                 firstDate = currentDate
     
-        counter+=1
+        counter += 1
         distance = distance + entry[1]
         lastDate = currentDate
 
@@ -33,3 +34,11 @@ def timebasedAvg(owl):
 
     # for each intervaltime tuple(avgOfDistance, amountOfValues)
     # return [(interval01, avg), (interval02, avg), ...]
+
+def timebasedAvgAllOwls(owlId, owlArray):
+    
+    print('finish')
+    # for owl in owlArray:
+    #     for entry in owl:
+
+
