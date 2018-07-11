@@ -1,6 +1,6 @@
-from preprocessing import openFile, getOwlIDs, owlDistanceAndTime
-from processing import timebasedAvg
-from postprocessing import plotAverages, xyPlot
+from preprocessing import *
+from processingData import *
+from postprocessing import *
 
 import os
 
@@ -20,21 +20,32 @@ for owl in owlIds:
     # owl = owlIds[0]
     print()
     print('new owl')
-    if (counter < 2):
+    if (owl != "3897"): # and counter < 1):
         print(owl)
         singleOwl = owlDistanceAndTime(owl,shpData)
         #interval = 3600000 # 60 min => 1000 * 60 * 60 // 1000 = 1 sec
-        averageDistance = timebasedAvg(singleOwl)
-        xyz = xyPlot(averageDistance)
-        plotAverages(xyz, owl)
+        distancePerHour = timebasedAvg(singleOwl)
+        xyz = xyPlot(distancePerHour)
+        # plotAverages(xyz, owl)
         averageDistanceAllOwls.append((owl, xyz[3]))
     else:
         print('nix')
     counter += 1
 
 # print(averageDistanceAllOwls)
+"""
+averageDistanceAllOwls
+[
+    ('id', [(avg, hour), (acg, hour), ...]),
+    ('id', [(avg, hour), (acg, hour), ...])
+]
+"""
 
-# avgDistances = timebasedAvgAllOwls(averageDistanceAllOwls[0], averageDistanceAllOwls[1])# average for each owl
-# xyzAll = xyPlot(avgDistances) 
-
+avgDistances = timebasedAvgAllOwls(averageDistanceAllOwls)# average for each owl
+xyzAll = xyzPlotData(avgDistances)
 plotAverages(xyzAll, 'OwlNightLong')
+
+hourBased = hourBasedAverageAllOwls(avgDistances)
+data = xyzPlotDataAvg(hourBased)
+plotAverages(data, 'All Averages')
+

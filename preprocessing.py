@@ -71,6 +71,7 @@ def calcDistance(latlng1, latlng2):
     lon2 = radians(latlng2[1])
     # distance calculation:
     cosG = sin(lat1)*sin(lat2) + cos(lat1) * cos(lat2) * cos(lon2 - lon1)
+    # print(cosG)
     dist = 6378.388 * acos(cosG)
     return dist * 1000
 
