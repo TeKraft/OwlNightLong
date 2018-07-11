@@ -28,47 +28,6 @@ def plotAverages(xyz, title):
     # plt.axis('equal')
     plt.show()
 
-# [ (y,z,x), (y,z,x), ... ]
-def xyPlot(array):
-    x = []
-    y = []
-    z = []
-
-    distPerHour = []
-    distance = 0
-    flightsOfHour = 0
-    lastHour = -1
-
-    arraySorted = sorted(array, key=lambda x: x[2].hour)
-
-    for idx, entry in enumerate(arraySorted):
-        """
-        entry = [
-            (distance, measInHour, firstDate, lastdate), ...
-        ]
-        """
-        # check if amount of measurements in an hour is
-        if (entry[1] >= 2):
-            x.append(entry[2].hour)
-            y.append(entry[0])
-            z.append(flightsOfHour)
-
-            currentHour = entry[2].hour
-
-            # sorted([('abc', 121),('abc', 231),('abc', 148), ('abc',221)], key=lambda x: x[1])
-
-            if( (lastHour != -1 and currentHour != lastHour) or (idx == len(arraySorted)-1 ) ):
-                average = distance/flightsOfHour
-                distPerHour.append((average, lastHour))
-                distance = 0
-                flightsOfHour = 0
-            
-            flightsOfHour += 1
-            distance = distance + entry[0]
-            lastHour = currentHour
-
-    return (x,y,z,distPerHour)
-
 def xyzPlotData(array):
     x = []
     y = []
@@ -91,6 +50,7 @@ def xyzPlotDataAvg(array):
     for entry in array:
         x.append(entry[0])
         y.append(entry[1])
+        # z.append(entry[3])
 
     output = (x,y)
     return output

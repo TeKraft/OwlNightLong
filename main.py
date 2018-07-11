@@ -14,20 +14,36 @@ shpData = openFile(dataPath,'ESRI Shapefile')
 owlIds = getOwlIDs(shpData)
 
 averageDistanceAllOwls = []
+averageDistanceAllOwlsMonth = []
 
 counter = 0
 for owl in owlIds:
     # owl = owlIds[0]
     print()
     print('new owl')
-    if (owl != "3897"): # and counter < 1):
+    if (owl != "3897"): # and counter < 1): (owl == "1750" or owl == "4846"): # 
         print(owl)
         singleOwl = owlDistanceAndTime(owl,shpData)
         #interval = 3600000 # 60 min => 1000 * 60 * 60 // 1000 = 1 sec
-        distancePerHour = timebasedAvg(singleOwl)
-        xyz = xyPlot(distancePerHour)
-        # plotAverages(xyz, owl)
-        averageDistanceAllOwls.append((owl, xyz[3]))
+        month = 0
+        while(month < 13):
+            distancePerHour = timebasedAvg(singleOwl, month)
+            xyzHour = distHour(distancePerHour)
+            # plotAverages(xyz, owl)
+
+            if (month == 0):
+                averageDistanceAllOwls.append((owl, xyzHour))
+            else:
+                # print(month)
+                if ( len(averageDistanceAllOwlsMonth) < month ):
+                    # print('add')
+                    averageDistanceAllOwlsMonth.append([])
+                # print(averageDistanceAllOwlsMonth)
+                averageDistanceAllOwlsMonth[month-1].append((owl, xyzHour))
+                # print(averageDistanceAllOwlsMonth)
+            
+            month += 1
+
     else:
         print('nix')
     counter += 1
@@ -36,16 +52,23 @@ for owl in owlIds:
 """
 averageDistanceAllOwls
 [
-    ('id', [(avg, hour), (acg, hour), ...]),
-    ('id', [(avg, hour), (acg, hour), ...])
+    ('id', [(avg, hour), (avg, hour), ...]),
+    ('id', [(avg, hour), (avg, hour), ...])
 ]
 """
 
 avgDistances = timebasedAvgAllOwls(averageDistanceAllOwls)# average for each owl
-xyzAll = xyzPlotData(avgDistances)
-plotAverages(xyzAll, 'OwlNightLong')
-
+# xyzAll = xyzPlotData(avgDistances)
+# plotAverages(xyzAll, 'OwlNightLong')
 hourBased = hourBasedAverageAllOwls(avgDistances)
 data = xyzPlotDataAvg(hourBased)
 plotAverages(data, 'All Averages')
+
+for idx, monthData in enumerate(averageDistanceAllOwlsMonth):
+    avgDistancesMonth = timebasedAvgAllOwls(monthData)# average for each owl
+    # xyzAll = xyzPlotData(avgDistances)
+    # plotAverages(xyzAll, 'OwlNightLong')
+    hourBasedMonth = hourBasedAverageAllOwls(avgDistancesMonth)
+    dataMonth = xyzPlotDataAvg(hourBasedMonth)
+    plotAverages(dataMonth, idx)
 
