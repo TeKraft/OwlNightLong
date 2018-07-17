@@ -17,6 +17,9 @@ owlIds = getOwlIDs(shpData)
 averageDistanceAllOwls = []
 averageDistanceAllOwlsMonth = []
 
+
+# owlIdsSorted = sorted(owlIds, key=lambda x: x)
+
 counter = 0
 for owl in owlIds:
     print()
