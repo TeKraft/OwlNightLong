@@ -23,7 +23,7 @@ owlIdsSorted = sorted(owlIds, key=lambda x: x)
 counter = 0
 for owl in owlIdsSorted:
     print()
-    print('new owl')
+    print('owl ' + str(counter+1) + '/' + str(len(owlIdsSorted)))
     if (owl != "3897"):
     # if (owl == "4046"): # use to reduce processing time
         print(owl)
