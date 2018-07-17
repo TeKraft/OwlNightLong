@@ -19,7 +19,7 @@ def plotAverages(xyz, title):
     # plotDist.scatter(xyz[0], xyz[1], c=coloring, label=plotLabels, cmap='gnuplot', s=20)
     # plotDist.plot(xyz[0], xyz[1])
 
-    plotDist.legend(xyz[1])
+   # plotDist.legend('Distance of ' + title + ' in m per hour')
 
     plt.title(title)
     plt.xlabel('time in hours')
@@ -28,7 +28,8 @@ def plotAverages(xyz, title):
     # plt.axis('equal')
     plt.show()
 
-def xyzPlotData(array):
+#unused
+def prepareXYZDataForPlotting(array):
     x = []
     y = []
     z = []
@@ -43,7 +44,7 @@ def xyzPlotData(array):
     output = (x,y,z, idx)   
     return output
 
-def xyzPlotDataAvg(array):
+def prepareXYDataForPlotting(array):
     x = []
     y = []
 

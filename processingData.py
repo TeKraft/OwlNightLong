@@ -5,18 +5,12 @@ Function to calculate distance average for a given time interval.
 params:
 owl: array with tuples (timestamp, distance)
 """
-def timebasedAvg(owl, month):
+def calcDistPerHour(owl, month):
 
     measInHour = 0
     distance = 0
     distanceArray = []
     lastDate = -1
-
-    # if (interval == 0) {
-    #     return per all
-    # } else {
-    #     return per month
-    # }
 
     if (month != 0):
         data = list(filter(lambda x: datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S').month == month , owl))
@@ -52,20 +46,16 @@ def timebasedAvg(owl, month):
     # for each intervaltime tuple(avgOfDistance, amountOfValues)
     # return [(interval01, avg), (interval02, avg), ...]
 
-def timebasedAvgAllOwls(owlArray):
+def adjustEntryPosition(owlArray):
     
     output = []
 
-    # print('finish')
     for idx, owl in enumerate(owlArray):
         owlId = owl[0]
         for entry in owl[1]:
             eachEntry = (entry[1], entry[0], idx, owlId)
             output.append(eachEntry)
     
-    # print()
-    # print('timebasedAvgAllOwls')
-    # print(output)
     return output
     # [
     # (hour, avg, owlId),
@@ -124,13 +114,8 @@ def distHour(array):
         """
         # check if amount of measurements in an hour is
         if (entry[1] >= 2):
-            # x.append(entry[2].hour)
-            # y.append(entry[0])
-            # z.append(flightsOfHour)
-
+        
             currentHour = entry[2].hour
-
-            # sorted([('abc', 121),('abc', 231),('abc', 148), ('abc',221)], key=lambda x: x[1])
 
             if( (lastHour != -1 and currentHour != lastHour) or (idx == len(arraySorted)-1 ) ):
                 average = distance/flightsOfHour
@@ -143,4 +128,4 @@ def distHour(array):
             lastHour = currentHour
 
     return (distPerHour)
-    # return (x,y,z,distPerHour)
+    

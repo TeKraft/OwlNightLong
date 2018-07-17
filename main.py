@@ -5,10 +5,11 @@ from postprocessing import *
 import os
 
 # dataPath = os.path.join('C:\\','Users','s_slim01','Downloads','movebank','movebank','eagle_owl','Eagle owl Reinhard Vohwinkel MPIO','points.shp')
-dataPath = os.path.join('/home','torben','Documents','uni','Master','SS_2018','PyGIS','final_submission','movebank','eagle_owl','Eagle owl Reinhard Vohwinkel MPIO','points.shp')
+#dataPath = os.path.join('/home','torben','Documents','uni','Master','SS_2018','PyGIS','final_submission','movebank','eagle_owl','Eagle owl Reinhard Vohwinkel MPIO','points.shp')
 # dataPath = os.path.join('C:\\', 'Users', 'hans-', \
 # 'Documents', 'Master', '2.Semester', 'PythonInGIS', \
 # 'FinalAssignment', 'data', 'movebank', 'movebank', 'eagle_owl', 'Eagle owl Reinhard Vohwinkel MPIO', 'points.shp')
+dataPath = os.path.join('C:\\', 'Users', 'pglah', 'Documents', 'movebank', 'movebank', 'eagle_owl', 'Eagle owl Reinhard Vohwinkel MPIO', 'points.shp')
 
 shpData = openFile(dataPath,'ESRI Shapefile')
 owlIds = getOwlIDs(shpData)
@@ -27,7 +28,7 @@ for owl in owlIds:
         #interval = 3600000 # 60 min => 1000 * 60 * 60 // 1000 = 1 sec
         month = 0
         while(month < 13):
-            distancePerHour = timebasedAvg(singleOwl, month)
+            distancePerHour = calcDistPerHour(singleOwl, month)
             xyzHour = distHour(distancePerHour)
             # plotAverages(xyz, owl)
 
@@ -57,18 +58,18 @@ averageDistanceAllOwls
 ]
 """
 
-avgDistances = timebasedAvgAllOwls(averageDistanceAllOwls)# average for each owl
-# xyzAll = xyzPlotData(avgDistances)
+avgDistances = adjustEntryPosition(averageDistanceAllOwls)# average for each owl
+# xyzAll = prepareXYZDataForPlotting(avgDistances)
 # plotAverages(xyzAll, 'OwlNightLong')
 hourBased = hourBasedAverageAllOwls(avgDistances)
-data = xyzPlotDataAvg(hourBased)
+data = prepareXYDataForPlotting(hourBased)
 plotAverages(data, 'All Averages')
 
 for idx, monthData in enumerate(averageDistanceAllOwlsMonth):
-    avgDistancesMonth = timebasedAvgAllOwls(monthData)# average for each owl
-    # xyzAll = xyzPlotData(avgDistances)
+    avgDistancesMonth = adjustEntryPosition(monthData)# average for each owl
+    # xyzAll = prepareXYZDataForPlotting(avgDistances)
     # plotAverages(xyzAll, 'OwlNightLong')
     hourBasedMonth = hourBasedAverageAllOwls(avgDistancesMonth)
-    dataMonth = xyzPlotDataAvg(hourBasedMonth)
+    dataMonth = prepareXYDataForPlotting(hourBasedMonth)
     plotAverages(dataMonth, idx)
 
