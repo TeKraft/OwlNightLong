@@ -18,10 +18,10 @@ averageDistanceAllOwls = []
 averageDistanceAllOwlsMonth = []
 
 
-# owlIdsSorted = sorted(owlIds, key=lambda x: x)
+owlIdsSorted = sorted(owlIds, key=lambda x: x)
 
 counter = 0
-for owl in owlIds:
+for owl in owlIdsSorted:
     print()
     print('new owl')
     if (owl != "3897"):
