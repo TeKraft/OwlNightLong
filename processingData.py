@@ -16,7 +16,6 @@ def calcDistPerHour(owl, month):
         data = list(filter(lambda x: datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S').month == month , owl))
     else:
         data = owl
-        print('new dataset')
 
     for entry in data:
         # time string: '2014-09-04 23:50:16'
@@ -26,9 +25,6 @@ def calcDistPerHour(owl, month):
             firstDate = currentDate
         else:
             if(currentHour != lastDate.hour):
-                # average = distance # /measInHour
-                if (distance > 10000):
-                    print(distance)
                 distanceArray.append((distance, measInHour, firstDate, lastDate))
                 distance = 0
                 measInHour = 0
@@ -38,12 +34,7 @@ def calcDistPerHour(owl, month):
         distance = distance + entry[1]
         lastDate = currentDate
 
-    # print()
-    # print('timebasedAvg')
-    # print(distanceArray)
     return distanceArray
-
-    # for each intervaltime tuple(avgOfDistance, amountOfValues)
     # return [(interval01, avg), (interval02, avg), ...]
 
 def adjustEntryPosition(owlArray):
@@ -80,7 +71,6 @@ def hourBasedAverageAllOwls(array):
         currentHour = entry[0]
 
         if( (lastHour != -1 and currentHour != lastHour) or (idx == len(arraySorted)-1) ):
-            # print(currentHour)
             average = distance/amountOwls
             distPerHour.append((lastHour, average))
             distance = 0
@@ -93,8 +83,8 @@ def hourBasedAverageAllOwls(array):
     return distPerHour
     # [ (hour, averageDistance), ... ]
 
-# [ (y,z,x), (y,z,x), ... ]
 def distHour(array):
+    # array => [ (y,z,x), (y,z,x), ... ]
     x = []
     y = []
     z = []

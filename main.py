@@ -5,11 +5,11 @@ from postprocessing import *
 import os
 
 # dataPath = os.path.join('C:\\','Users','s_slim01','Downloads','movebank','movebank','eagle_owl','Eagle owl Reinhard Vohwinkel MPIO','points.shp')
-#dataPath = os.path.join('/home','torben','Documents','uni','Master','SS_2018','PyGIS','final_submission','movebank','eagle_owl','Eagle owl Reinhard Vohwinkel MPIO','points.shp')
+dataPath = os.path.join('/home','torben','Documents','uni','Master','SS_2018','PyGIS','final_submission','movebank','eagle_owl','Eagle owl Reinhard Vohwinkel MPIO','points.shp')
 # dataPath = os.path.join('C:\\', 'Users', 'hans-', \
 # 'Documents', 'Master', '2.Semester', 'PythonInGIS', \
 # 'FinalAssignment', 'data', 'movebank', 'movebank', 'eagle_owl', 'Eagle owl Reinhard Vohwinkel MPIO', 'points.shp')
-dataPath = os.path.join('C:\\', 'Users', 'pglah', 'Documents', 'movebank', 'movebank', 'eagle_owl', 'Eagle owl Reinhard Vohwinkel MPIO', 'points.shp')
+# dataPath = os.path.join('C:\\', 'Users', 'pglah', 'Documents', 'movebank', 'movebank', 'eagle_owl', 'Eagle owl Reinhard Vohwinkel MPIO', 'points.shp')
 
 shpData = openFile(dataPath,'ESRI Shapefile')
 owlIds = getOwlIDs(shpData)
@@ -19,10 +19,10 @@ averageDistanceAllOwlsMonth = []
 
 counter = 0
 for owl in owlIds:
-    # owl = owlIds[0]
     print()
     print('new owl')
-    if (owl != "3897"): # and counter < 1): (owl == "1750" or owl == "4846"): # 
+    if (owl != "3897"):
+    # if (owl == "4046"): # use to reduce processing time
         print(owl)
         singleOwl = owlDistanceAndTime(owl,shpData)
         #interval = 3600000 # 60 min => 1000 * 60 * 60 // 1000 = 1 sec
@@ -31,22 +31,15 @@ for owl in owlIds:
             distancePerHour = calcDistPerHour(singleOwl, month)
             xyzHour = distHour(distancePerHour)
             # plotAverages(xyz, owl)
-
             if (month == 0):
                 averageDistanceAllOwls.append((owl, xyzHour))
             else:
-                # print(month)
                 if ( len(averageDistanceAllOwlsMonth) < month ):
-                    # print('add')
                     averageDistanceAllOwlsMonth.append([])
-                # print(averageDistanceAllOwlsMonth)
                 averageDistanceAllOwlsMonth[month-1].append((owl, xyzHour))
-                # print(averageDistanceAllOwlsMonth)
-            
             month += 1
-
     else:
-        print('nix')
+        print('no data')
     counter += 1
 
 # print(averageDistanceAllOwls)
@@ -63,7 +56,8 @@ avgDistances = adjustEntryPosition(averageDistanceAllOwls)# average for each owl
 # plotAverages(xyzAll, 'OwlNightLong')
 hourBased = hourBasedAverageAllOwls(avgDistances)
 data = prepareXYDataForPlotting(hourBased)
-plotAverages(data, 'All Averages')
+plotAverages(data, 0)
+saveAsCSV(hourBased, 0)
 
 for idx, monthData in enumerate(averageDistanceAllOwlsMonth):
     avgDistancesMonth = adjustEntryPosition(monthData)# average for each owl
@@ -71,5 +65,5 @@ for idx, monthData in enumerate(averageDistanceAllOwlsMonth):
     # plotAverages(xyzAll, 'OwlNightLong')
     hourBasedMonth = hourBasedAverageAllOwls(avgDistancesMonth)
     dataMonth = prepareXYDataForPlotting(hourBasedMonth)
-    plotAverages(dataMonth, idx)
+    plotAverages(dataMonth, idx+1)
 

@@ -26,8 +26,6 @@ def getOwlIDs(data):
     while feature:
         IDvalues.append(feature.GetFieldAsString("tag_ident"))
         feature = owlLayer.GetNextFeature()
-    
-
     return list(set(IDvalues))
 
 
@@ -51,12 +49,10 @@ def owlDistanceAndTime(owlID, data):
             # current feature
             lat2 = feature.GetFieldAsDouble('lat')
             lon2 = feature.GetFieldAsDouble('long')
-
+            # distance
             distance = calcDistance((lat1, lon1), (lat2, lon2))
 
         timeValues.append((timestamp, distance))
-
-        # if (owlTableId == owlID):
         counter += 1
         oldFeature = feature
         feature = owlLayer.GetNextFeature()

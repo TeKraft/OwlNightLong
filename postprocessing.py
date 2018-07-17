@@ -2,31 +2,34 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 def plotAverages(xyz, title):
-    f, plotDist = plt.subplots(1) # Create plot
+    plotTitle = getMonth(title)
 
-    # plotLabels = list(set(xyz[2]))
-    # if (xyz[3]):
-    #     plotLabels = xyz[3]
-    # else:
-    #     plotLabels = xyz[2]
+    # check if data is available for plotting
+    if (len(xyz[0]) > 0 and len(xyz[1]) > 0):
+        f, plotDist = plt.subplots(1) # Create plot
 
-    # plotDist.plot(xyz[0], xyz[1], label=plotLabels)
-    # plotDist.plot(xyz[0], xyz[1], label=plotLabels)
-    print()
-    print(xyz[0])
-    print(xyz[1])
-    plotDist.scatter(xyz[0], xyz[1], label=xyz[1], cmap='gnuplot', s=20)
-    # plotDist.scatter(xyz[0], xyz[1], c=coloring, label=plotLabels, cmap='gnuplot', s=20)
-    # plotDist.plot(xyz[0], xyz[1])
+        plotDist.scatter(xyz[0], xyz[1], label=xyz[1], cmap='gnuplot', s=20)
+        # plotDist.scatter(xyz[0], xyz[1], c=coloring, label=plotLabels, cmap='gnuplot', s=20)
+        plt.title(plotTitle)
+        plt.xlabel('time in hours')
+        plt.ylabel('average distance in m')
+        plt.ylim(0, 1750)
 
-   # plotDist.legend('Distance of ' + title + ' in m per hour')
+        # save plot as .png and show
+        plt.savefig('./plots/' + plotTitle + '.png')
+        print('Saved ' + plotTitle + ' as .png to plots-folder.')
+        # plt.show()
+    else:
+        print('No data available')
 
-    plt.title(title)
-    plt.xlabel('time in hours')
-    plt.ylabel('average distance in m')
-    # plotDist.legend()
-    # plt.axis('equal')
-    plt.show()
+def saveAsCSV(data, title):
+    fileTitle = getMonth(title)
+    np.savetxt('./csv/' + fileTitle + '.csv', data, delimiter=',', header="Hour,# Average Distance")
+    print('Saved ' + fileTitle + ' as .csv to csv-folder.')
+
+def getMonth(title):
+    month = ['All Owls', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    return month[title]
 
 #unused
 def prepareXYZDataForPlotting(array):
