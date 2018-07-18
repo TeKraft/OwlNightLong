@@ -51,6 +51,7 @@ def owlDistanceAndTime(owlID, data):
             lon2 = feature.GetFieldAsDouble('long')
             # distance
             distance = calcDistance((lat1, lon1), (lat2, lon2))
+            distance = round(distance, 2)
 
         timeValues.append((timestamp, distance))
         counter += 1
