@@ -66,6 +66,7 @@ def hourBasedAverageAllOwls(array):
     distance = 0
     amountOwls = 0
     distPerHour = []
+    currentHour = -1
 
     for idx, entry in enumerate(arraySorted):
         currentHour = entry[0]
@@ -76,15 +77,13 @@ def hourBasedAverageAllOwls(array):
             distance = 0
             amountOwls = 0
         
-        if ( (idx == len(arraySorted)-1) ):
-            average = distance/amountOwls
-            distPerHour.append((lastHour, average))
-            distance = 0
-            amountOwls = 0
-        
         amountOwls += 1
         distance = distance + entry[1]
         lastHour = currentHour
+
+        if ( (idx == len(arraySorted)-1) ):
+            average = distance/amountOwls
+            distPerHour.append((lastHour, average))
 
     return distPerHour
     # [ (hour, averageDistance), ... ]

@@ -23,10 +23,9 @@ owlIdsSorted = sorted(owlIds, key=lambda x: x)
 counter = 0
 for owl in owlIdsSorted:
     print()
-    print('owl ' + str(counter+1) + '/' + str(len(owlIdsSorted)))
+    print(owl + ' ' + str(counter+1) + '/' + str(len(owlIdsSorted)))
     if (owl != "3897"):
-    # if (owl == "4046"): # use to reduce processing time
-        print(owl)
+    # if (owl == "4046" or owl == "3894"): # use to reduce processing time
         singleOwl = owlDistanceAndTime(owl,shpData)
         #interval = 3600000 # 60 min => 1000 * 60 * 60 // 1000 = 1 sec
         month = 0
@@ -69,4 +68,5 @@ for idx, monthData in enumerate(averageDistanceAllOwlsMonth):
     hourBasedMonth = hourBasedAverageAllOwls(avgDistancesMonth)
     dataMonth = prepareXYDataForPlotting(hourBasedMonth)
     plotAverages(dataMonth, idx+1)
+    saveAsCSV(hourBasedMonth, idx+1)
 
