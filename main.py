@@ -1,18 +1,28 @@
 from preprocessing import *
 from processingData import *
 from postprocessing import *
+from saveMap import *
 
 import os
 
 # dataPath = os.path.join('C:\\','Users','s_slim01','Downloads','movebank','movebank','eagle_owl','Eagle owl Reinhard Vohwinkel MPIO','points.shp')
-dataPath = os.path.join('/home','torben','Documents','uni','Master','SS_2018','PyGIS','final_submission','movebank','eagle_owl','Eagle owl Reinhard Vohwinkel MPIO','points.shp')
+#dataPath = os.path.join('/home','torben','Documents','uni','Master','SS_2018','PyGIS','final_submission','movebank','eagle_owl','Eagle owl Reinhard Vohwinkel MPIO','points.shp')
 # dataPath = os.path.join('C:\\', 'Users', 'hans-', \
 # 'Documents', 'Master', '2.Semester', 'PythonInGIS', \
 # 'FinalAssignment', 'data', 'movebank', 'movebank', 'eagle_owl', 'Eagle owl Reinhard Vohwinkel MPIO', 'points.shp')
 # dataPath = os.path.join('C:\\', 'Users', 'pglah', 'Documents', 'movebank', 'movebank', 'eagle_owl', 'Eagle owl Reinhard Vohwinkel MPIO', 'points.shp')
 
+datadir = os.path.join('C:\\','Users','Tanja','Desktop','Master','PythonInGIS')
+dataPath = os.path.join(datadir, 'data','points.shp')
+rasterPath = os.path.join(datadir, 'OwlNightLong','raster','dtk_reprojected_clipped.tif')
+outputPath = os.path.join(datadir, 'OwlNightLong','map.png')
+
+rasterData = openRaster(rasterPath)
 shpData = openFile(dataPath,'ESRI Shapefile')
 owlIds = getOwlIDs(shpData)
+
+saveMap(shpData,rasterData,outputPath,'Wistia','YlGn')
+
 
 averageDistanceAllOwls = []
 averageDistanceAllOwlsMonth = []
@@ -69,4 +79,3 @@ for idx, monthData in enumerate(averageDistanceAllOwlsMonth):
     dataMonth = prepareXYDataForPlotting(hourBasedMonth)
     plotAverages(dataMonth, idx+1)
     saveAsCSV(hourBasedMonth, idx+1)
-
